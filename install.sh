@@ -584,12 +584,12 @@ sed -i "0,/$pattern/s/$pattern/\n\n&/" /etc/pacman.d/mirrorlist
 ### 8.Install the base and base-devel packages
 echo
 
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel linux linux-firmware
 
 # if error
 if [ "$?" != "0" ]
 then
-    pacstrap -i /mnt base base-devel
+    pacstrap -i /mnt base base-devel linux linux-firmware
 fi
 
 
@@ -870,16 +870,13 @@ $CHROOT pacman --noconfirm -S networkmanager
 # dhclient
 $CHROOT pacman --noconfirm -S dhclient
 
-# Initramfs
-$CHROOT mkinitcpio -p linux
-
 ### 13.GRUB
 
 # firstly,install grub and efibootmgr
 platform=$(uname -m)
 
 # used for probe other os
-$CHROOT pacman --noconfirm -S os-prober
+$CHROOT pacman --noconfirm -S os-prober ntfs-3g
 
 # for UEFI,just for x86_64 or i386
 if [ "$BOOT_MODE" = "UEFI" ]
